@@ -1,0 +1,76 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    position: relative;
+    display: inline-block;
+}
+
+.container2 {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 20px;
+}
+
+.player {
+    background-color: yellow;
+    height: 30px;
+    width: 100%;
+}
+
+.player2 {
+    position: absolute;
+    background: blue;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+        
+.timer {
+    background-color: red;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container3 {
+    position: relative;
+    height: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.enemy {
+    background-color: yellow;
+    height: 30px;
+    width: 100%;
+}
+
+.enemy2 {
+    position: absolute;
+    background: blue;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.tie {
+    position: absolute;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right:0;
+    bottom:0;
+    left:0;
+    display: none;
+}
