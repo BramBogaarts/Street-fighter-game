@@ -8,45 +8,62 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.7
 
+const groundLevel = 600
 
 const background = new Sprite({
     position: {
         x: 0,
-        y:0
+        y: 0
     },
     imageSrc: './img/map.png'
+})
+
+// Geluidseffecten
+const hitSound = new Howl({
+    src: ['./sounds/hit.mp3'],
+    volume: 0.8
+})
+
+const backgroundMusic = new Howl({
+    src: ['./sounds/background-music.mp3'],
+    volume: 0.4,
+    loop: true
 })
 
 const player = new Fighter({
     position: {
         x: 0,
-        y: 0
+        y: 376
     },
     velocity: {
         x: 0,
         y: 0
     },
     offset: {
-        x: 0,
+        x: -10,
         y: 0
     },
-    imageSrc: './img/macho-nacho.svg'
+    imageSrc: './img/macho-nacho.svg',
+    width: 100,
+    height: 200
 })
 
 const enemy = new Fighter({
     position: {
-        x: 400,
-        y: 100
+        x: 940,
+        y: 376
     },
     velocity: {
         x: 0,
         y: 0
     },
     offset: {
-        x: -50,
+        x: 10,
         y: 0
     },
-    imageSrc: './img/macho-nach.svg'
+    imageSrc: './img/evil-nacho.svg',
+    width: 100,
+    height: 200
 })
 
 console.log(player)
@@ -84,6 +101,7 @@ function rectangularCollision({rectangle1, rectangle2}) {
 function determineWinner({player, enemy, timerId}) {
     clearTimeout(timerId)
     gameOver = true
+    backgroundMusic.stop()
     document.querySelector('.tie').style.display = 'flex'
     if(player.health === enemy.health) {
         document.querySelector('.tie').innerHTML = 'Tie'
@@ -111,6 +129,12 @@ function decreaseTimer() {
 }
 
 decreaseTimer()
+
+// Start muziek bij eerste klik op de pagina
+window.addEventListener('click', () => {
+    Howler.ctx.resume()
+    backgroundMusic.play()
+}, { once: true })
 
 function animate() {
     window.requestAnimationFrame(animate)
@@ -148,6 +172,7 @@ function animate() {
         player.isAttacking = false
         enemy.health -= 20
         document.querySelector('.enemy2').style.width = enemy.health + '%'
+        hitSound.play()
         console.log('Player hit enemy!');
     }
 
@@ -162,6 +187,7 @@ function animate() {
         enemy.isAttacking = false
         player.health -= 20
         document.querySelector('.player2').style.width = player.health + '%'
+        hitSound.play()
         console.log('enemy hit player');
     }
 
@@ -173,6 +199,7 @@ function animate() {
 animate()
 
 window.addEventListener('keydown', (event) => {
+    Howler.ctx.resume()
     switch (event.key) {
         case 'd':
             keys.d.pressed = true

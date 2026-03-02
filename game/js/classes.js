@@ -34,11 +34,11 @@ class Sprite {
 }
 
 class Fighter {
-    constructor({position, velocity, color = 'red', offset, imageSrc, scale = 1 }) {
+    constructor({position, velocity, color = 'red', offset, imageSrc, scale = 1, width = 100, height = 200 }) {
       this.position = position
       this.velocity = velocity
-      this.width = 50
-      this.height = 150
+      this.width = width
+      this.height = height
       this.lastKey
       this.attackBox = {
         position: {
@@ -81,23 +81,12 @@ class Fighter {
             c.fillStyle = this.color
             c.fillRect(this.position.x, this.position.y, this.width, this.height)
         }
-
-        if (this.isAttacking) {
-            c.fillStyle = 'green'
-            c.fillRect(
-                this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            )
-        }
     }
 
     update() {
         this.draw()
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x
         this.attackBox.position.y = this.position.y
-
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
@@ -118,9 +107,12 @@ class Fighter {
         }
 
         // Verticale grenzen - bodem
-        if (this.position.y + this.height + this.velocity.y >= canvas.height) {
+        if (this.position.y + this.height >= groundLevel) {
             this.velocity.y = 0
-        } else this.velocity.y += gravity
+            this.position.y = groundLevel - this.height
+        } else {
+            this.velocity.y += gravity
+        }
     }
 
     attack() {
