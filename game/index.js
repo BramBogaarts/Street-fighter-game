@@ -15,7 +15,7 @@ const background = new Sprite({
         x: 0,
         y: 0
     },
-    imageSrc: './img/map.png'
+    imageSrc: './img/map2.png'
 })
 
 // Geluidseffecten
@@ -136,6 +136,97 @@ window.addEventListener('click', () => {
     backgroundMusic.play()
 }, { once: true })
 
+
+
+//
+// Button layout PS5 DualSense:
+//   1 = kruisje = springen
+//   2 = rondje  = aanvallen
+//   14 = D-pad links
+//   15 = D-pad rechts
+
+// Gamepadconnected event: luistert naar het moment dat een controller wordt aangesloten
+// event.gamepad geeft toegang tot het gamepad object van de aangesloten controller
+window.addEventListener("gamepadconnected", (event) => {
+    console.log("Gamepad verbonden!")
+    console.log("ID:", event.gamepad.id)
+    console.log("Index:", event.gamepad.index)
+    console.log("Aantal knoppen:", event.gamepad.buttons.length)
+    console.log("Aantal assen:", event.gamepad.axes.length)
+})
+
+// Polling loop: wordt elke frame aangeroepen vanuit animate()
+function handleGamepads() {
+    // Haal alle aangesloten controllers op
+    const gamepads = navigator.getGamepads()
+
+    // --- Speler 1 (gamepad 0) ---
+    // Controleer of de controller daadwerkelijk bestaat
+    const gp1 = gamepads[0]
+    if (gp1) {
+        // axes[0] = X-as linker stick: -1 (links) tot 1 (rechts)
+        const axisX1 = gp1.axes[0]
+        // buttons[14].pressed → true als D-pad links ingedrukt is
+        const dpadLeft1  = gp1.buttons[14]?.pressed
+        const dpadRight1 = gp1.buttons[15]?.pressed
+
+        // Bewegen via linker stick (deadzone 0.3 om drift te voorkomen) OF d-pad
+        if (axisX1 < -0.3 || dpadLeft1) {
+            player.velocity.x = -5
+            player.lastKey = 'a'
+        } else if (axisX1 > 0.3 || dpadRight1) {
+            player.velocity.x = 5
+            player.lastKey = 'd'
+        }
+
+        // kruisje = springen
+        // _jumpPressed voorkomt dat springen blijft triggeren zolang knop ingedrukt is
+        if (gp1.buttons[1].pressed && !gp1._jumpPressed) {
+            player.velocity.y = -20
+            Howler.ctx.resume()
+        }
+        gp1._jumpPressed = gp1.buttons[1].pressed
+
+        // vierkantje = aanvallen
+        // _attackPressed voorkomt dat aanvallen blijft triggeren zolang knop ingedrukt is
+        if (gp1.buttons[2].pressed && !gp1._attackPressed) {
+            player.attack()
+            Howler.ctx.resume()
+        }
+        gp1._attackPressed = gp1.buttons[2].pressed
+    }
+
+    // --- Speler 2 (gamepad 1) ---
+    const gp2 = gamepads[1]
+    if (gp2) {
+        // axes[0] = X-as linker stick: -1 (links) tot 1 (rechts)
+        const axisX2 = gp2.axes[0]
+        const dpadLeft2  = gp2.buttons[14]?.pressed
+        const dpadRight2 = gp2.buttons[15]?.pressed
+
+        // Bewegen via linker stick OF d-pad
+        if (axisX2 < -0.3 || dpadLeft2) {
+            enemy.velocity.x = -5
+            enemy.lastKey = 'ArrowLeft'
+        } else if (axisX2 > 0.3 || dpadRight2) {
+            enemy.velocity.x = 5
+            enemy.lastKey = 'ArrowRight'
+        }
+
+        // kruisje = springen
+        if (gp2.buttons[1].pressed && !gp2._jumpPressed) {
+            enemy.velocity.y = -20
+        }
+        gp2._jumpPressed = gp2.buttons[1].pressed
+
+        // rondje = aanvallen
+        if (gp2.buttons[2].pressed && !gp2._attackPressed) {
+            enemy.attack()
+        }
+        gp2._attackPressed = gp2.buttons[2].pressed
+    }
+}
+
 function animate() {
     window.requestAnimationFrame(animate)
     c.fillStyle = 'black'
@@ -146,15 +237,18 @@ function animate() {
 
     player.velocity.x = 0
     enemy.velocity.x = 0
+
+    // Controller input verwerken
+    handleGamepads()
     
-    // player
+    // player (keyboard)
     if (keys.a.pressed && player.lastKey === 'a') {
         player.velocity.x = -5
     } else if (keys.d.pressed && player.lastKey === 'd') {
         player.velocity.x = 5
     }
 
-    // enemy
+    // enemy (keyboard)
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
         enemy.velocity.x = -5
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
