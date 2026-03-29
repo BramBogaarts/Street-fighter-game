@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/shop.css">
+    <title>Winkel</title>
+</head>
+<body>
+    <h1>Winkel</h1>
+    <div class="coins">Munten: <span id="coin-count"></span></div>
+
+    <!-- Bandana's rij -->
+    <div class="shop-row">
+        <div class="category-label">skins en bandana's</div>
+        <div class="items">
+            <a class="item" href="product.html?id=bandana-blauw">
+                <img src="./img/blauwe-bandana.svg" alt="Blauwe bandana">
+                <span class="item-price">30 munten</span>
+            </a>
+            <a class="item" href="product.html?id=bandana-geel">
+                <img src="./img/gele-bandana.svg" alt="Gele bandana">
+                <span class="item-price">50 munten</span>
+            </a>
+            <a class="item" href="product.html?id=bandana-groen">
+                <img src="./img/groene-bandana.svg" alt="Groene bandana">
+                <span class="item-price">50 munten</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Skins rij -->
+    <div class="shop-row">
+        <div style="width:180px; flex-shrink:0;"></div>
+        <div class="items">
+            <a class="item" href="product.html?id=Blue Bandito">
+                <img src="./img/blue-bandito.svg" alt="Blue Bandito skin">
+                <span class="item-price">60 munten</span>
+            </a>
+            <a class="item" href="product.html?id=Nacho Cheese">
+                <img src="./img/nacho-cheese.svg" alt="Nacho skin">
+                <span class="item-price">75 munten</span>
+            </a>
+            <a class="item" href="product.html?id=Guaco Nacho">
+                <img src="./img/guaco-nacho.svg" alt="Guaco Nacho skin">
+                <span class="item-price">75 munten</span>
+            </a>
+        </div>
+    </div>
+
+    <button class="back-btn" onclick="location.href='index.html'">Terug</button>
+    <button onclick="myFunction()">game over test</button>
+    <script>
+        // Munten ophalen uit localStorage
+        let coins = 120;
+        if (coins !== null) {
+            document.getElementById('coin-count').textContent = coins;
+        }
+        function Game() {
+            coins += 10;
+            document.getElementById('coin-count').textContent = coins;
+        }
+    </script>
+</body>
+</html>

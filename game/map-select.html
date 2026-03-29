@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <title>Map Select</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #0a2e0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        h1 {
+            color: white;
+            font-size: 42px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            align-self: flex-start;
+            margin-left: calc(50vw - 360px);
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+        }
+
+        .maps {
+            display: flex;
+            gap: 60px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+
+        .map-card {
+            cursor: pointer;
+            border: 4px solid transparent;
+            transition: border-color 0.1s, transform 0.1s;
+        }
+
+        .map-card:hover {
+            border-color: #00cfcf;
+            transform: scale(1.03);
+        }
+
+        .map-card.selected {
+            border-color: #00cfcf;
+            box-shadow: 0 0 12px #00cfcf;
+        }
+
+        .map-card img {
+            display: block;
+            width: 260px;
+            height: 160px;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        .bottom {
+            display: flex;
+            justify-content: flex-end;
+            width: 720px;
+        }
+
+        .start-btn {
+            background: #00cfcf;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 22px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .start-btn:hover {
+            background: #00a8a8;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Map Select</h1>
+
+    <div class="maps">
+        <div class="map-card selected" id="map1" onclick="selectMap('map1')">
+            <img src="./img/map.png" alt="Map 1">
+        </div>
+        <div class="map-card" id="map2" onclick="selectMap('map2')">
+            <img src="./img/map2.png" alt="Map 2">
+        </div>
+    </div>
+
+    <div class="bottom">
+        <button class="start-btn" onclick="location.href='index.html'">Betreed het Toernooi</button>
+    </div>
+
+    <script>
+        let selected = 'map1'
+
+        function selectMap(id) {
+            document.querySelectorAll('.map-card').forEach(c => c.classList.remove('selected'))
+            document.getElementById(id).classList.add('selected')
+            selected = id
+        }
+
+        document.querySelector('.start-btn').addEventListener('click', () => {
+            localStorage.setItem('map', selected)
+            location.href = 'game.html'
+        })
+    </script>
+</body>
+</html>

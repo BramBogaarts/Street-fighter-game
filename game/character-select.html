@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/character.css">
+    <title>Character Select</title>
+</head>
+<body>
+
+    <h1>Character Select</h1>
+
+    <div class="characters">
+        <div class="card selected" id="card-mn" onclick="selectChar('mn')">
+            <img src="./img/macho-nacho.svg" alt="Macho Nacho">
+        </div>
+        <div class="card" id="card-en" onclick="selectChar('en')">
+            <img src="./img/evil-nacho.svg" alt="Evil Nacho">
+        </div>
+        <div class="card coming-soon">
+            <span class="coming-text">Comming<br>Soon</span>
+        </div>
+        <div class="card coming-soon">
+            <span class="coming-text">Comming<br>Soon</span>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <button class="map-btn" onclick="location.href='map-select.html'">Map Select</button>
+    </div>
+
+    <script>
+        let selected = 'mn'
+
+        function selectChar(id) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'))
+            document.getElementById('card-' + id).classList.add('selected')
+            selected = id
+        }
+
+        document.querySelector('.map-btn').addEventListener('click', () => {
+            localStorage.setItem('character', selected)
+            location.href = 'map-select.html'
+        })
+    </script>
+</body>
+</html>

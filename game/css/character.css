@@ -1,0 +1,91 @@
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #0a2e0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        h1 {
+            color: white;
+            font-size: 42px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+        }
+
+        .characters {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            width: 160px;
+            height: 180px;
+            background: #6b0f0f;
+            border: 4px solid #8b1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: border-color 0.1s, transform 0.1s;
+            image-rendering: pixelated;
+        }
+
+
+        .card.selected {
+            border-color: #00cfcf;
+            box-shadow: 0 0 12px #00cfcf;
+        }
+
+        .card img {
+            width: 120px;
+            height: 140px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .card.coming-soon {
+            cursor: default;
+        }
+
+        .card.coming-soon:hover {
+            border-color: #8b1a1a;
+            transform: none;
+        }
+
+        .coming-text {
+            color: #8b1a1a;
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.3;
+            text-shadow: 2px 2px 0 #3a0a0a;
+        }
+
+        .bottom {
+            display: flex;
+            justify-content: flex-end;
+            width: 720px;
+        }
+
+        .map-btn {
+            background: #00cfcf;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 22px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+ 

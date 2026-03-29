@@ -1,21 +1,29 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = 1024
-canvas.height = 576
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+})
 
 c.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.7
 
-const groundLevel = 600
+const groundLevel = canvas.height - 300
+
+const chosenChar = localStorage.getItem('character') || 'mn'
+const chosenMap  = localStorage.getItem('map') || 'map1'
 
 const background = new Sprite({
     position: {
         x: 0,
         y: 0
     },
-    imageSrc: './img/map2.png'
+    imageSrc: chosenMap === 'map1' ? './img/map.png' : './img/map2.png'
 })
 
 // Geluidseffecten
@@ -33,7 +41,7 @@ const backgroundMusic = new Howl({
 const player = new Fighter({
     position: {
         x: 0,
-        y: 376
+        y: canvas.height - 300
     },
     velocity: {
         x: 0,
@@ -43,15 +51,15 @@ const player = new Fighter({
         x: -10,
         y: 0
     },
-    imageSrc: './img/macho-nacho.svg',
-    width: 100,
-    height: 200
+    imageSrc: chosenChar === 'mn' ? './img/macho-nacho.svg' : './img/evil-nacho.svg',
+    width: 150,
+    height: 300
 })
 
 const enemy = new Fighter({
     position: {
-        x: 940,
-        y: 376
+        x: canvas.width - 150,
+        y: canvas.height - 300
     },
     velocity: {
         x: 0,
@@ -61,9 +69,9 @@ const enemy = new Fighter({
         x: 10,
         y: 0
     },
-    imageSrc: './img/evil-nacho.svg',
-    width: 100,
-    height: 200
+    imageSrc: chosenChar === 'mn' ? './img/evil-nacho.svg' : './img/macho-nacho.svg',
+    width: 150,
+    height: 300
 })
 
 console.log(player)
@@ -102,13 +110,16 @@ function determineWinner({player, enemy, timerId}) {
     clearTimeout(timerId)
     gameOver = true
     backgroundMusic.stop()
-    document.querySelector('.tie').style.display = 'flex'
+
+    const tieEl = document.querySelector('.tie')
+    tieEl.style.display = 'flex'
+
     if(player.health === enemy.health) {
-        document.querySelector('.tie').innerHTML = 'Tie'
+        tieEl.innerHTML = 'Tie'
     } else if (player.health > enemy.health) {
-        document.querySelector('.tie').innerHTML = 'Player 1 wins'
+        tieEl.innerHTML = 'Player 1 wins'
     } else if (player.health < enemy.health) {
-        document.querySelector('.tie').innerHTML = 'Player 2 wins'
+        tieEl.innerHTML = 'Player 2 wins'
     }
 }
 
@@ -130,18 +141,30 @@ function decreaseTimer() {
 
 decreaseTimer()
 
-// Start muziek bij eerste klik op de pagina
-window.addEventListener('click', () => {
+// Muziek starten zodra de game pagina geladen is
+window.addEventListener('load', () => {
     Howler.ctx.resume()
     backgroundMusic.play()
-}, { once: true })
+})
 
-
-
+// PS5 DualSense controller support
+// Gamepad object eigenschappen:
+//   id        → naam/merk van de controller (tekst)
+//   index     → uniek nummer per controller (0, 1, 2, 3...)
+//   connected → true als controller verbonden is
+//   timestamp → DOMHighResTimeStamp - tijdstip van laatste update (ms sinds pagina geladen)
+//   mapping   → "standard" = W3C standaard layout, "" = aangepaste layout
+//   axes      → joystick posities: X-as (-1 = links, 1 = rechts), Y-as (-1 = omhoog, 1 = omlaag)
+//   buttons   → array van GamepadButton objecten { pressed, touched, value }
+//
+// Button object eigenschappen:
+//   pressed → true als knop volledig ingedrukt is
+//   touched → true als knop wordt aangeraakt (drukgevoelige knoppen)
+//   value   → getal 0 t/m 1: hoe hard de knop ingedrukt is (handig voor triggers LT/RT)
 //
 // Button layout PS5 DualSense:
-//   1 = kruisje = springen
-//   2 = rondje  = aanvallen
+//   0 = Cross (×)    → aanvallen
+//   2 = Square (□)   → springen
 //   14 = D-pad links
 //   15 = D-pad rechts
 
@@ -156,6 +179,7 @@ window.addEventListener("gamepadconnected", (event) => {
 })
 
 // Polling loop: wordt elke frame aangeroepen vanuit animate()
+// Minimaal nodig: getGamepads() + staat checken + herhalen via requestAnimationFrame
 function handleGamepads() {
     // Haal alle aangesloten controllers op
     const gamepads = navigator.getGamepads()
@@ -179,7 +203,7 @@ function handleGamepads() {
             player.lastKey = 'd'
         }
 
-        // kruisje = springen
+        // kruisje  = springen — pressed: true als knop volledig ingedrukt
         // _jumpPressed voorkomt dat springen blijft triggeren zolang knop ingedrukt is
         if (gp1.buttons[1].pressed && !gp1._jumpPressed) {
             player.velocity.y = -20
@@ -187,13 +211,13 @@ function handleGamepads() {
         }
         gp1._jumpPressed = gp1.buttons[1].pressed
 
-        // vierkantje = aanvallen
+        // vierkant = aanvallen
         // _attackPressed voorkomt dat aanvallen blijft triggeren zolang knop ingedrukt is
-        if (gp1.buttons[2].pressed && !gp1._attackPressed) {
+        if (gp1.buttons[0].pressed && !gp1._attackPressed) {
             player.attack()
             Howler.ctx.resume()
         }
-        gp1._attackPressed = gp1.buttons[2].pressed
+        gp1._attackPressed = gp1.buttons[0].pressed
     }
 
     // --- Speler 2 (gamepad 1) ---
@@ -219,11 +243,11 @@ function handleGamepads() {
         }
         gp2._jumpPressed = gp2.buttons[1].pressed
 
-        // rondje = aanvallen
-        if (gp2.buttons[2].pressed && !gp2._attackPressed) {
+        // vierkant = aanvallen
+        if (gp2.buttons[0].pressed && !gp2._attackPressed) {
             enemy.attack()
         }
-        gp2._attackPressed = gp2.buttons[2].pressed
+        gp2._attackPressed = gp2.buttons[0].pressed
     }
 }
 
@@ -293,7 +317,8 @@ function animate() {
 animate()
 
 window.addEventListener('keydown', (event) => {
-    Howler.ctx.resume()
+    if (gameOver) return
+
     switch (event.key) {
         case 'd':
             keys.d.pressed = true
@@ -335,10 +360,6 @@ window.addEventListener('keyup', (event) => {
         case 'a':
             keys.a.pressed = false
             break
-    }
-
-    // enemy keys 
-    switch (event.key) {
         case 'ArrowRight':
             keys.ArrowRight.pressed = false
             break

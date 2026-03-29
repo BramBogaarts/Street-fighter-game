@@ -4,33 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/css.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <title>Fighting Game</title>
 </head>
 <body>
-    <div class="container">
-        <div class="container2">
-            <!-- player health -->
-            <div class="container3">
-                <div class="player">
-                    <div class="player2"></div>
-                </div>
+    <!-- Startscherm -->
+    <div id="startscherm">
+        <h1>The Fighting Tournament</h1>
+
+        <div class="controls">
+            <div class="speler">
+                <h2>Speler 1</h2>
+                <p>Bewegen: A / D</p>
+                <p>Springen: W</p>
+                <p>Aanvallen: Spatie</p>
             </div>
-            
-            <!-- timer -->
-            <div class="timer">10</div>
-            
-            <!-- enemy health -->
-            <div class="container3">
-                <div class="enemy">
-                    <div class="enemy2"></div>
-                </div>
+            <div class="speler">
+                <h2>Speler 2</h2>
+                <p>Bewegen: ← / →</p>
+                <p>Springen: ↑</p>
+                <p>Aanvallen: Enter</p>
             </div>
         </div>
-        <div class="tie">Tie</div>
-        <canvas></canvas>
+
+        <button id="startknop"><a href="character-select.html">Start</a></button>
+        <button id="shopknop"><a href="shop.html">Shop</a></button>
+        <p class="hint">of druk op een toets</p>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-    <script src="js/classes.js"></script>
-    <script src="index.js"></script>
+
 </body>
 </html>

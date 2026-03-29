@@ -1,0 +1,123 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+body {
+    background-color: #0a2e0a;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    image-rendering: pixelated;
+}
+.product-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 32px;
+    max-width: 900px;
+    width: 100%;
+}
+/* Links: afbeelding + naam + prijs + knoppen */
+.product-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    width: 200px;
+}
+.product-img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+.product-name {
+    font-size: 11px;
+    color: white;
+    text-align: center;
+    margin-top: 4px;
+}
+.product-price {
+    font-size: 13px;
+    color: white;
+    text-align: center;
+}
+.btn {
+    display: block;
+    width: 180px;
+    padding: 14px 0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    margin-top: 4px;
+}
+.btn-kopen {
+    background-color: #00cfcf;
+    color: white;
+}
+.btn-kopen:hover {
+    background-color: #00a8a8;
+}
+.btn-kopen:active {
+    transform: translateY(2px);
+}
+.btn-winkel {
+    background-color: #00cfcf;
+    color: white;
+}
+.btn-winkel:hover {
+    background-color: #00a8a8;
+}
+/* Rechts: beschrijving box */
+.product-desc {
+    background-color: #6b1a1a;
+    border: 3px solid #8b2a2a;
+    padding: 20px;
+    color: white;
+    font-size: 9px;
+    line-height: 1.9;
+    flex: 1;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.product-desc p {
+    margin-bottom: 10px;
+    text-align: center;
+}
+.product-desc .bullet {
+    display: block;
+    margin-bottom: 8px;
+    text-align: center;
+}
+/* Gekocht melding */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00cfcf;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    padding: 14px 24px;
+    display: none;
+    z-index: 999;
+}

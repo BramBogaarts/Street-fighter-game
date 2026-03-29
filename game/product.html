@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/product.css">
+    <title>Product</title>
+</head>
+<body>
+
+<div class="product-container">
+    <div class="product-left">
+        <img class="product-img" id="product-img" src="" alt="">
+        <div class="product-name" id="product-name"></div>
+        <div class="product-price" id="product-price"></div>
+        <button class="btn btn-kopen" onclick="kopen()">Kopen</button>
+        <a class="btn btn-winkel" href="shop.html">Winkel</a>
+    </div>
+
+    <div class="product-desc" id="product-desc"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const products = {
+        'bandana-blauw': {
+            name: 'Blauwe Bandana',
+            price: 30,
+            img: './img/blauwe-bandana.svg',
+            desc: [
+                'Deze blauwe bandana zorgt ervoor dat je 10% sneller wordt'
+            ]
+        },
+        'bandana-geel': {
+            name: 'Gele Bandana',
+            price: 50,
+            img: './img/gele-bandana.svg',
+            desc: [
+             'Deze gele bandana zorgt ervoor dat je vijand 10% slomer wordt'
+            ]
+        },
+        'bandana-groen': {
+            name: 'Groene Bandana',
+            price: 50,
+            img: './img/groene-bandana.svg',
+            desc: [
+            'Deze groene bandana zorgt ervoor dat je 50% meer damage doet'
+            ]
+        },
+        'Blue Bandito': {
+            name: 'Blue Bandito',
+            price: 60,
+            img: './img/blue-bandito.svg',
+            desc: [
+                'Blue Bandito is een ijzige outlaw uit de Koelkastwoestijn, gemaakt van koude blauwe kaas en pure afgunst.',
+                'Hij veracht alles wat warm, smerig en gezellig is – zijn missie is om de gesmolten macht van Nacho Cheese te bevriezen.',
+                'Gewapend met zijn vuisten zaait hij kilte waar eens smaak heerste.'
+            ]
+        },
+        'Nacho Cheese': {
+            name: 'Nacho Cheese',
+            price: 75,
+            img: './img/nacho-cheese.svg',
+            desc: [
+            ' Nacho Cheese is de smeuïge strijder geboren uit gesmolten cheddar en oude maïslegendes.',
+             ' Met zijn Nacho Cheese vuisten en knapperige harnas verdedigt hij de wereld tegen smaakloosheid.',
+             ' Zijn grootste vijand? Señor Salsabloem, die alles wil verbranden wat ooit smeuïg was.'
+            ]
+        },
+        'Guaco Nacho': {
+            name: 'Guaco Nacho',
+            price: 75,
+            img: './img/guaco-nacho.svg',
+            desc: [
+            'Quaco Nacho, geboren uit de heilige Avo-Mystica, is de Wachter van de Smaak.',
+             'Gewapend met Avocado Armor en een netwerk van spionerende nacho’s verdedigt hij de Guacamole-Gal.',  
+             'Zijn eeuwige strijd tegen Señor Salsabloem bepaalt het lot van dips wereldwijd.'
+            ]
+        }
+    }
+
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get('id')
+    const product = products[id]
+
+    if (product) {
+        document.getElementById('product-img').src = product.img
+        document.getElementById('product-img').alt = product.name
+        document.getElementById('product-name').textContent = product.name
+        document.getElementById('product-price').textContent = product.price + ' munten'
+
+        const descEl = document.getElementById('product-desc')
+        product.desc.forEach((line, i) => {
+            const span = document.createElement('span')
+            span.className = 'bullet'
+            span.textContent = line
+            descEl.appendChild(span)
+        })
+    }
+
+    let coins = 180;
+
+    // function kopen() {
+    //     if (!product) return
+    //     let coins = parseInt(localStorage.getItem('coins') || '100')
+    //     if (coins < product.price) {
+    //         showToast('Niet genoeg munten!')
+    //         return
+    //     }
+    //     coins -= product.price
+    //     localStorage.setItem('coins', coins)
+    //     showToast('Gekocht! ' + coins + ' munten over.')
+    // }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast')
+        toast.textContent = msg
+        toast.style.display = 'block'
+        setTimeout(() => toast.style.display = 'none', 2500)
+    }
+    // systeem om munten b
+</script>
+</body>
+</html>
